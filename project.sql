@@ -1,0 +1,174 @@
+--********************************************Products********************************
+select * from products
+CREATE TABLE Products
+(
+        product_id  number(30) PRIMARY key not null,
+        product_name varchar2(60) not null,
+        product_price number(12,4) ,
+        product_color varchar2(30),
+        product_size number(10),
+        product_type VARCHAR2(10),
+        product_categories varchar2(50),
+        product_discount number(2,2) ,
+        customers_id number(15) not null,
+        order_id varchar2(15) UNIQUE     
+ )
+drop table products
+ ALTER TABLE Products
+ ADD constraint check_categories check (product_size = 3,4,6,7,8 );
+  
+ ALTER TABLE Products
+ ADD constraint check_categories check (product_type = 'For Mens','For Kids', 'For Women' );
+ 
+ ALTER TABLE Products
+ ADD FOREIGN KEY (customers_id) REFERENCES Customers(customers_id);
+ 
+ ALTER TABLE Products
+ ADD FOREIGN KEY (order_id) REFERENCES Products_Order(order_id);
+DESCRIBE Products;
+--******************************************Order***********************
+DROP TABLE Products;
+CREATE TABLE Products_Order
+(
+        order_id VARCHAR2(15) PRIMARY KEY,
+        delivery_date date,
+        address_id VARCHAR2(5) not null,
+        quantity number(8),
+        product_id  number(20),
+        customers_id number(15) not null
+              
+)
+ALTER TABLE Products_Order
+ ADD FOREIGN KEY (customers_id) REFERENCES Customers(customers_id);
+ 
+ALTER TABLE Products_Order
+ ADD FOREIGN KEY (product_id) REFERENCES Products(product_id);
+ 
+ALTER TABLE Products_Order
+ ADD FOREIGN KEY (address_id) REFERENCES Address(address_id);
+--**************************customers************************
+drop table customers
+CREATE TABLE Customers (
+        customers_id number(15) PRIMARY KEY ,
+        customers_fname VARCHAR2(20) ,
+        customers_lname VARCHAR2(20) not null,
+        customers_email VARCHAR2(10) UNIQUE,
+        customers_phone VARCHAR2(10) not null,
+        address_id VARCHAR2(5) not null,
+        order_id VARCHAR2(15) UNIQUE      
+)
+
+ALTER TABLE Customers
+ADD FOREIGN KEY (order_id) REFERENCES Products_Order(order_id);
+
+ALTER TABLE Address
+ADD FOREIGN KEY (address_id) REFERENCES Address(address_id);
+
+--********************************************************************************************
+CREATE TABLE Address (
+        address_id VARCHAR2(5) PRIMARY KEY ,
+        street VARCHAR2(20) ,
+        states VARCHAR2(20) not null,
+        pincode NUMBER(8) UNIQUE    
+)
+--*********************************************************************************************
+/* insert values in Address table*/
+select * from address
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('101','janpathcolony' ,'MP','460001');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('102','kalyannagar' ,'MH','509410');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('103','kasicolony' ,'UK','400001');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('104','shyamcolony' ,'UP','390354');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('105','nehrucolony' ,'CG','310031');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('106','gandhiroad' ,'DL','100001');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('107','veeradigali' ,'PB','950095');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('108','sitanagar' ,'WB','646562');
+INSERT INTO Address (address_id ,street ,states ,pincode)
+VALUES ('109','redmondroad' ,'MP','747474');
+
+
+
+
+
+
+
+---**********************************************************************************************
+/* insert values in Products table*/
+select * from products;
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1001,'LEAP7X',3999.00,'Grey',7,'For Mens','Sports Lacing Shoes',.1,11111,'547,245,1244');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1002,'LEAP7X',999.00,'Black',7,'For Mens','Sports Lacing Shoes',.1,22222,'147,555,1244');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1003,'Gliders',1500.00,'Tan',7,'For Mens','Casual Lacing Shoes',.15,33333,'777,222,4444');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1004,'LucyandLuke',750.00,'Beige',3,'For Kids','Casual Non Lacing Shoes',.15,44444,'999,121,1111');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1005,'LucyandLuke',750.00,'White',4,'For Kids','Casual Non Lacing Shoes',.25,55555,'877,245,1454');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1006,'Gliders',650.00,'N Blue',8,'For Women','Casual Non Lacing Shoes',0,66666,'027,655,2544');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1007,'LEAP7X',2199.00,'Green',6,'For Women','Sporty Casual Lacing Shoes',.5,77777,'007,200,0000');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1008,'LEAP7X',2199.00,'White',9,'For Men','Sporty Casual Lacing Shoes',.5,88888,'927,215,1157');
+INSERT INTO  Products (product_id,product_name,product_price,product_color ,product_size ,product_type,product_categories ,product_discount,customers_id,order_id)
+VALUES(1009,'LEAP7X',2199.00,'Blue',7,'For Women','Sporty Casual Lacing Shoes',.5,99999,'958,000,8582');
+--************************************************************************************************************************************************
+/* insert values in Products order table*/
+drop table products_order
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('547,245,1244',(to_date('01/01/2020','dd/mm/yyyy')),'101',2,1001,11111);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('147,555,1244',(to_date('25/05/2021','dd/mm/yyyy')),'102',4,1002,22222);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('777,222,4444',(to_date('01/03/2022','dd/mm/yyyy')),'103',1,1003,33333);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('999,121,1111',(to_date('11/11/2021','dd/mm/yyyy')),'104',2,1004,44444);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('877,245,1454',(to_date('12/12/2020','dd/mm/yyyy')),'105',1,1005,55555);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('027,655,2544',(to_date('10/12/2019','dd/mm/yyyy')),'106',1,1006,66666);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('007,200,0000',(to_date('30/04/2020','dd/mm/yyyy')),'107',1,1007,77777);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('927,215,1157',(to_date('31/08/2018','dd/mm/yyyy')),'108',1,1008,88888);
+INSERT INTO Products_order(order_id ,delivery_date ,address_id  ,quantity,product_id,customers_id)
+VALUES ('958,000,8582',(to_date('25/11/2022','dd/mm/yyyy')),'109',2,1009,99999);
+
+--******************************************************************************************************************************
+/* insert values in Customers table*/
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (11111, 'John' ,'Smith' , 'john123', 1111155555, '101','547,245,1244') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (22222, 'Dave' ,'Franklin' , 'frank321', 1111122222, '102','147,555,1244') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (33333, 'Mary' ,'Gibson' , 'mary101', 1111133333, '103','777,222,4444') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (44444, 'Glory' ,'Anson' , 'anson222', 1111101010, '104' ,'999,121,1111') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (55555, 'Kerry' ,'Lysinger' , 'kerry783', 1111102020, '105','877,245,1454') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (66666, 'Harry' ,'Housen' , 'harry593', 1111188888, '106','027,655,2544') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (77777, 'Joseph' ,'Haun' , 'joseph555', 1111100000, '107','007,200,0000') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (88888, 'Jacob' ,'Sorenson' , 'jacob777', 1111178787, '108','927,215,1157') ;
+INSERT INTO Customers(customers_id,customers_fname ,customers_lname ,customers_email ,customers_phone,address_id,order_id )
+VALUES (99999, 'Chana' ,'Trimble' , 'chana454', 1111198989, '109','958,000,8582') ;
+
+--*********************************************************************************************************************************
+
+select * from products
+
+select * from customers
+
+select * from address
+
+select * from products_order
